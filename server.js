@@ -28,19 +28,19 @@ bot.on('message', (payload, reply) => {
   })
 })
 
+
 app.get('/procurar-todos', function (){
-	console.log();
+    request({
+        uri: "http://www.camara.leg.br/SitCamaraWS/Deputados.asmx/ObterDeputados",
+        method: "GET",
+        timeout: 10000,
+        followRedirect: true,
+        maxRedirects: 10
+    }, function(error, response, body) {
+    });
 });
 
-request({
-  uri: "http://www.camara.leg.br/SitCamaraWS/Deputados.asmx/ObterDeputados",
-  method: "GET",
-  timeout: 10000,
-  followRedirect: true,
-  maxRedirects: 10
-}, function(error, response, body) {
-  console.log(body);
-});
+
 
 var port = process.env.PORT || 3000
 app.listen(port, function() {
