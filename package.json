@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.2",
+    "messenger-bot": "*",
     "request": "^2.81.0",
     "xml2js": "^0.4.17"
   }

@@ -28,10 +28,6 @@ bot.on('message', (payload, reply) => {
   })
 })
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
-
 app.get('/procurar-todos', function (){
 	console.log();
 });
@@ -44,4 +40,9 @@ request({
   maxRedirects: 10
 }, function(error, response, body) {
   console.log(body);
+});
+
+var port = process.env.PORT || 3000
+app.listen(port, function() {
+        console.log("To view your app, open this link in your browser: http://localhost:" + port);
 });
