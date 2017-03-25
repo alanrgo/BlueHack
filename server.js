@@ -1,13 +1,32 @@
-
 var http = require("http");
 var https = require("https");
 var request = require("request");
 var express = require('express');
 var app = express();
+var http = require('http')
+var Bot = require('messenger-bot')
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+var bot = new Bot({
+  token: 'EAAauMlcKvcYBACSVtLiZBPPd8jnsQmaR9kpwRQZCpzVxZAyGhGVY55iw4dCpnr0TzTZAXgzE5FDC7f1F47384q1uePZBFvpNCZCgxToGUPsTGSw2bPWvk1O40NvGFq0XZAiScN9wlR7yFVFNyHQELNl15pj9hx8alaD8NET9s1ObQZDZD',
+  verify: 'capiva123',
+  app_secret: '655dc5cf75313d4fc3a76e1f2f080b46'
+})
+
+bot.on('error', (err) => {
+  console.log(err.message)
+})
+
+bot.on('message', (payload, reply) => {
+  var text = payload.message.text
+
+  bot.getProfile(payload.sender.id, function(err, profile){
+
+    reply({ text }, function(err) {
+
+      console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
+    })
+  })
+})
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
