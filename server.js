@@ -46,6 +46,7 @@ bot.on('message', function(payload, reply){
 		if (err) {
 			console.error(err);
 		} else {
+            Context[id] = response.context;
             console.log("response:" + JSON.stringify(response));
             if(response.output.voto != null){
                 console.log("voto: " + response.output.voto);
@@ -89,7 +90,6 @@ bot.on('message', function(payload, reply){
                 reply({text:text}, function(err) {
                     console.log(err);
                 })
-                Context[id] = response.context;
             }
 		}
 	});
