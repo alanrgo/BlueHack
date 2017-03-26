@@ -46,12 +46,8 @@ bot.on('message', function(payload, reply){
 		if (err) {
 			console.error(err);
 		} else {
-            Context[id] = response.context;
             console.log("response:" + JSON.stringify(response));
-            if(response.output.voto != null){
-                console.log("voto: " + response.output.voto);
-                Context[id].votos.push(response.output.voto);
-            }
+
             if(Context[id].votos.length == 5){
                 var votos = Context[id].votos;
                 var correspondence = deputados.map(function(dep){
@@ -90,6 +86,11 @@ bot.on('message', function(payload, reply){
                 reply({text:text}, function(err) {
                     console.log(err);
                 })
+                Context[id] = response.context;
+            }
+            if(response.output.voto != null){
+                console.log("voto: " + response.output.voto);
+                Context[id].votos.push(response.output.voto);
             }
 		}
 	});
