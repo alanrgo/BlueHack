@@ -75,6 +75,8 @@ bot.on('message', function(payload, reply){
                 text += correspondence[1].nome + "\n";
                 text += correspondence[2].nome + "\n";
                 console.log(text);
+								text += "Obrigado por nos ajudar a tornar as informações mais acessíveis\n";
+
                 reply({text:text}, function(err) {
                     console.log(err);
                 })
