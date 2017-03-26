@@ -33,7 +33,7 @@ Context = {}
 
 bot.on('message', function(payload, reply){
 	var text = payload.message.text;
-	id = payload.sender.id;
+	var id = payload.sender.id;
 	Context[id] = Context[id] || {};
 
 	conversation.message({
@@ -57,11 +57,12 @@ bot.on('message', function(payload, reply){
 
 var port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
+app.get('/', function(req, res){
+
 	return bot._verify(req, res);
 })
 
-app.post('/', (req, res) => {
+app.post('/', function(req, res){
 	bot._handleMessage(req.body)
     res.end(JSON.stringify({status: 'ok'}))
 })
