@@ -45,7 +45,7 @@ bot.on('message', function(payload, reply){
 			console.error(err);
 		} else {
             Context[id] = response.context;
-            console.log("response:" + response)
+            console.log("response:" + JSON.stringify(response))
             var text = response.output.text[0];
 			reply({text:text}, function(err) {
 				console.log(err);
