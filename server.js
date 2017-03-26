@@ -1,9 +1,10 @@
-
 var http = require("http");
 var https = require("https");
 var request = require("request");
 var express = require('express');
+var Bot = require('messenger-bot')
 var app = express();
+
 var parseString = require('xml2js').parseString;
 
 var list_deputies = [];
@@ -12,13 +13,44 @@ var deputies_JSON = {};
 var name = encodeURI("Antônio");
 console.log(name);
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+
+
+var bot = new Bot({
+    token: 'EAAauMlcKvcYBACSVtLiZBPPd8jnsQmaR9kpwRQZCpzVxZAyGhGVY55iw4dCpnr0TzTZAXgzE5FDC7f1F47384q1uePZBFvpNCZCgxToGUPsTGSw2bPWvk1O40NvGFq0XZAiScN9wlR7yFVFNyHQELNl15pj9hx8alaD8NET9s1ObQZDZD',
+    verify: 'capiva123',
+    app_secret: '655dc5cf75313d4fc3a76e1f2f080b46'
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+bot.on('error',function(err){
+    console.log(err.message)
 });
+
+bot.on('message', function(payload, reply){
+    var text = payload.message.text;
+
+    bot.getProfile(payload.sender.id, function(err, profile){
+
+        reply({ text }, function(err) {
+
+            console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
+        })
+    })
+});
+
+
+var port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  return bot._verify(req, res);
+})
+
+app.post('/', (req, res) => {
+  bot._handleMessage(req.body)
+  res.end(JSON.stringify({status: 'ok'}))
+})
+
+http.createServer(app).listen(port);
+console.log('Echo bot server running at port 3000.')
 
 app.get('/procurar-todos', function (req, res){
 	list_deputies = [];
@@ -120,11 +152,3 @@ app.get('/get-email-by-name/:name', function( req, res){
 	}
 
 });
-
-
-
-
-
-
-
-
