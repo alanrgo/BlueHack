@@ -40,12 +40,14 @@ bot.on('message', function(payload, reply){
 
 	conversation.message({
 		input: { text: text },
+        context: Context[id],
 		workspace_id: '37dbfdf9-2b69-4eee-a446-5e436921c376'
 	}, function(err, response) {
 		if (err) {
 			console.error(err);
 		} else {
-			reply({text:response.output.text.values[0]}, function(err) {
+            Context[id] = response.context;
+			reply({text:response.output.text[0]}, function(err) {
 				console.log(err);
 			})
 		}
