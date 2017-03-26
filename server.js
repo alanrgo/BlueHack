@@ -45,13 +45,11 @@ bot.on('message', function(payload, reply){
 		if (err) {
 			console.error(err);
 		} else {
-			reply({ response }, function(err) {
+			reply({ response.output.text.values[0] }, function(err) {
 				console.log(err);
 			})
 		}
 	});
-
-
 });
 
 
