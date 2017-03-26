@@ -36,7 +36,7 @@ bot.on('message', function(payload, reply){
 	var text = payload.message.text;
 	var id = payload.sender.id;
 	Context[id] = Context[id] || {};
-    Context[id].votos = Context[id].votos || []
+    Context[id].votos = Context[id].votos || [];
 
 	conversation.message({
 		input: { text: text },
@@ -46,8 +46,9 @@ bot.on('message', function(payload, reply){
 		if (err) {
 			console.error(err);
 		} else {
-            console.log("response:" + JSON.stringify(response))
+            console.log("response:" + JSON.stringify(response));
             if(response.output.voto != null){
+                console.log("voto: " + response.output.voto);
                 Context[id].votos.push(response.output.voto);
             }
             if(Context[id].votos.length == 5){
