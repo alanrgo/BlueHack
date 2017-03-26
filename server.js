@@ -3,6 +3,7 @@ var https = require("https");
 var request = require("request");
 var express = require('express');
 var ConversationV1 = require('watson-developer-cloud/conversation/v1');
+var deputados = require('./data/deputado.json');
 var Bot = require('messenger-bot')
 var app = express();
 
@@ -35,6 +36,7 @@ bot.on('message', function(payload, reply){
 	var text = payload.message.text;
 	var id = payload.sender.id;
 	Context[id] = Context[id] || {};
+    Context[id].votos = Context[id].votos || []
 
 	conversation.message({
 		input: { text: text },
@@ -44,12 +46,50 @@ bot.on('message', function(payload, reply){
 		if (err) {
 			console.error(err);
 		} else {
-            Context[id] = response.context;
             console.log("response:" + JSON.stringify(response))
-            var text = response.output.text[0];
-			reply({text:text}, function(err) {
-				console.log(err);
-			})
+            if(response.output.voto != null){
+                Context[id].votos.push(response.output.voto);
+            }
+            if(Context[id].votos.length == 5){
+                var votos = Context[id].votos;
+                var correspondence = deputados.map(function(dep){
+                    var score = 0;
+                    if(dep.v1 == (votos[0]? "1":"0")){
+                        score++;
+                    }if(dep.v2 == (votos[1]? "1":"0")){
+                        score++;
+                    }if(dep.v3 == (votos[2]? "1":"0")){
+                        score++;
+                    }if(dep.v4 == (votos[3]? "1":"0")){
+                        score++;
+                    }if(dep.v5 == (votos[4]? "1":"0")){
+                        score++;
+                    }
+
+                    return {nome:dep.nome,score:score}
+
+                });
+                correspondence.sort(function(a,b){
+                    return(b.score - a.score);
+                });
+                var text = " Os três parlamentares que mais combinam com você são: \n";
+                text += correspondence[0].nome + "\n";
+                text += correspondence[1].nome + "\n";
+                text += correspondence[2].nome + "\n";
+                console.log(text);
+                reply({text:text}, function(err) {
+                    console.log(err);
+                })
+
+
+            }
+            else{
+                var text = response.output.text[0];
+                reply({text:text}, function(err) {
+                    console.log(err);
+                })
+                Context[id] = response.context;
+            }
 		}
 	});
 });
