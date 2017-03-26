@@ -11,8 +11,6 @@ var parseString = require('xml2js').parseString;
 var list_deputies = [];
 var deputies_JSON = {};
 
-var name = encodeURI("Antônio");
-console.log(name);
 
 var conversation = new ConversationV1({
 	username: 'e5f411c6-1d5d-4d30-825c-8f613f94737f',
@@ -47,7 +45,9 @@ bot.on('message', function(payload, reply){
 			console.error(err);
 		} else {
             Context[id] = response.context;
-			reply({text:response.output.text[0]}, function(err) {
+            console.log("response:" + response)
+            var text = response.output.text[0];
+			reply({text}, function(err) {
 				console.log(err);
 			})
 		}
@@ -63,7 +63,7 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 	bot._handleMessage(req.body)
-		res.end(JSON.stringify({status: 'ok'}))
+    res.end(JSON.stringify({status: 'ok'}))
 })
 
 http.createServer(app).listen(port);
