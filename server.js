@@ -57,19 +57,10 @@ bot.on('message', function(payload, reply){
 
 var port = process.env.PORT || 3000;
 
-app.get('/', function(req, res){
+http.createServer(bot.middleware()).listen(port)
 
-	return bot._verify(req, res);
-})
-
-app.post('/', function(req, res){
-	bot._handleMessage(req.body)
-    res.end(JSON.stringify({status: 'ok'}))
-})
-
-http.createServer(app).listen(port);
 console.log('Echo bot server running at port 3000.')
-
+/*
 app.get('/procurar-todos', function (req, res){
 	list_deputies = [];
 	if( Object.keys(deputies_JSON).length == 0 ){
@@ -170,3 +161,4 @@ app.get('/get-email-by-name/:name', function( req, res){
 	}
 
 });
+*/
